@@ -1,5 +1,5 @@
 
-resource "docker_container" "nginx" {
+resource "docker_container" "backend" {
 
 
   lifecycle {
