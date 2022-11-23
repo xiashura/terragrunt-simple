@@ -5,7 +5,7 @@ let
  init = pkgs.writeShellScriptBin "init" ''
   docker-compose up -d 
   docker exec -it localstack_main awslocal s3api create-bucket \
-   --no-sign-request --bucket my-bucket --region us-east-1
+   --no-sign-request --bucket my-bucket --region eu-west-1
   '';
 
 in
