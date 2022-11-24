@@ -28,7 +28,13 @@ resource "null_resource" "load-config" {
   }
 
   provisioner "file" {
-    content     = file("${path.module}/template/default.conf")
+    content = templatefile(
+      "${path.module}/template/default.conf",
+      {
+        backend_port     = var.backend_port
+        backend_hostname = var.backend_hostname
+      }
+    )
     destination = "${var.path_site}/default.conf"
   }
 }
@@ -54,7 +60,7 @@ resource "docker_container" "nginx" {
   }
 
   mounts {
-    target = "/etc/nginx/site-enabled/default.conf"
+    target = "/etc/nginx/conf.d/default.conf"
     type   = "bind"
     source = "${var.path_site}/default.conf"
   }
