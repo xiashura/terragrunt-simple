@@ -1,0 +1,4 @@
+volume
+tmp
+.terraform
+.terraform.lock.hcl
