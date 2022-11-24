@@ -7,7 +7,7 @@
 # We override the terraform block source attribute here just for the QA environment to show how you would deploy a
 # different version of the module in a specific environment.
 terraform {
-  source = "${include.envcommon.locals.base_source_url}?ref=master"
+  source = "${include.envcommon.locals.base_source_url}?ref=0.0.2"
 }
 
 
@@ -29,6 +29,25 @@ include "envcommon" {
 }
 
 
+dependency "backend" {
+  config_path =  "${find_in_parent_folders("backend")}"
+
+   mock_outputs = {
+    docker_run = true
+  }
+}
+
+
+dependency "network" {
+  config_path = "${find_in_parent_folders("network")}"
+}
+
+
+inputs = {
+
+  docker_newtork_id = dependency.network.outputs.id
+  backend_hostname = dependency.backend.outputs.docker_ip[0]
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # We don't need to override any of the common parameters for this environment, so we don't specify any inputs.
 # ---------------------------------------------------------------------------------------------------------------------
